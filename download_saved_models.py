@@ -1,7 +1,7 @@
 import os
 import zipfile
 
-from torch.utils.model_zoo import _download_url_to_file
+from torch.hub import _download_url_to_file
 
 
 def unzip(source_filename, dest_dir):
