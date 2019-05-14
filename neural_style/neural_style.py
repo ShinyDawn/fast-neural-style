@@ -11,6 +11,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision import transforms
 import torch.onnx
+import pickle
 
 import utils
 from transformer_net import TransformerNet
@@ -59,6 +60,10 @@ def train(args):
     features_style = vgg(utils.normalize_batch(style))
     gram_style = [utils.gram_matrix(y) for y in features_style]
 
+    style_loss_list = []
+    content_loss_list = []
+    total_loss_list = []
+
     for e in range(args.epochs):
         transformer.train()
         agg_content_loss = 0.
@@ -90,6 +95,10 @@ def train(args):
             total_loss.backward()
             optimizer.step()
 
+            style_loss_list.append(style_score.item())
+            content_loss_list.append(content_score.item())
+            total_loss_list.append(loss.item())
+
             agg_content_loss += content_loss.item()
             agg_style_loss += style_loss.item()
 
@@ -117,6 +126,16 @@ def train(args):
     torch.save(transformer.state_dict(), save_model_path)
 
     print("\nDone, trained model saved at", save_model_path)
+
+    # save loss
+
+
+    with open('out1', 'wb') as fp:
+        pickle.dump(style_loss_list, fp)
+    with open('out2', 'wb') as fp:
+        pickle.dump(content_loss_list, fp)
+    with open('out3', 'wb') as fp:
+        pickle.dump(total_loss_list, fp)
 
 
 def stylize(args):
