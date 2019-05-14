@@ -60,9 +60,9 @@ def train(args):
     features_style = vgg(utils.normalize_batch(style))
     gram_style = [utils.gram_matrix(y) for y in features_style]
 
-    style_loss_list = []
-    content_loss_list = []
-    total_loss_list = []
+    # style_loss_list = []
+    # content_loss_list = []
+    # total_loss_list = []
 
     for e in range(args.epochs):
         transformer.train()
@@ -95,12 +95,24 @@ def train(args):
             total_loss.backward()
             optimizer.step()
 
-            style_loss_list.append(style_loss.item())
-            content_loss_list.append(content_loss.item())
-            total_loss_list.append(total_loss.item())
+            # style_loss_list.append(style_loss.item())
+            # content_loss_list.append(content_loss.item())
+            # total_loss_list.append(total_loss.item())
 
             agg_content_loss += content_loss.item()
             agg_style_loss += style_loss.item()
+
+            f= open("style_loss.txt","w+")
+            f.write(agg_style_loss)
+            f.close()
+
+            f= open("content_loss.txt","w+")
+            f.write(agg_content_loss)
+            f.close()
+
+            f= open("total_loss.txt","w+")
+            f.write(total_loss.item)
+            f.close()
 
             if (batch_id + 1) % args.log_interval == 0:
                 mesg = "{}\tEpoch {}:\t[{}/{}]\tcontent: {:.6f}\tstyle: {:.6f}\ttotal: {:.6f}".format(
@@ -128,12 +140,12 @@ def train(args):
     print("\nDone, trained model saved at", save_model_path)
 
     # save loss
-    with open('out1', 'wb') as fp:
-        pickle.dump(style_loss_list, fp)
-    with open('out2', 'wb') as fp:
-        pickle.dump(content_loss_list, fp)
-    with open('out3', 'wb') as fp:
-        pickle.dump(total_loss_list, fp)
+    # with open('out1', 'wb') as fp:
+    #     pickle.dump(style_loss_list, fp)
+    # with open('out2', 'wb') as fp:
+    #     pickle.dump(content_loss_list, fp)
+    # with open('out3', 'wb') as fp:
+    #     pickle.dump(total_loss_list, fp)
 
 
 def stylize(args):
