@@ -128,18 +128,18 @@ def train(args):
     print("\nDone, trained model saved at", save_model_path)
 
     # save loss
-    with open('1.txt', 'w') as f:
+    with open('out1', 'w') as f:
         for item in style_loss_list:
             f.write("%s\n" % item)
 
-    with open('1.txt', 'w') as f:
-        for item in style_loss_list:
+    with open('out2', 'w') as f:
+        for item in content_loss_list:
             f.write("%s\n" % item)
 
-    with open('1.txt', 'w') as f:
-        for item in style_loss_list:
+    with open('out3', 'w') as f:
+        for item in total_loss_list:
             f.write("%s\n" % item)
-            
+
     # with open('out1', 'wb') as fp:
     #     pickle.dump(style_loss_list, fp)
     # with open('out2', 'wb') as fp:
