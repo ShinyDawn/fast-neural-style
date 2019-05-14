@@ -103,15 +103,15 @@ def train(args):
             agg_style_loss += style_loss.item()
 
             f= open("style_loss.txt","w+")
-            f.write(agg_style_loss)
+            f.write(str(agg_style_loss))
             f.close()
 
             f= open("content_loss.txt","w+")
-            f.write(agg_content_loss)
+            f.write(str(agg_content_loss))
             f.close()
 
             f= open("total_loss.txt","w+")
-            f.write(total_loss.item)
+            f.write(str(total_loss.item()))
             f.close()
 
             if (batch_id + 1) % args.log_interval == 0:
